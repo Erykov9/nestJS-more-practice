@@ -5,6 +5,7 @@ import { BooksService } from './books.service';
 import { Controller, Get, Param, Post, Body, Put, Delete, UseGuards } from '@nestjs/common';
 import { NotFoundException } from '@nestjs/common';
 import { ParseUUIDPipe } from '@nestjs/common';
+import { AdminAuthGuard } from 'src/auth/admin-auth.guard';
 
 
 
@@ -46,5 +47,15 @@ export class BooksController {
       throw new NotFoundException('Book not found');
     await this.booksService.deleteById(id);
     return { success: true };
+  }
+
+  @Post('/like')
+  @UseGuards(AdminAuthGuard)
+  @UseGuards(JwtAuthGuard)
+  async like(
+    @Param('bookId', new ParseUUIDPipe()) bookId: string, 
+    @Param('userId', new ParseUUIDPipe()) userId: string
+    ) {
+      
   }
 }

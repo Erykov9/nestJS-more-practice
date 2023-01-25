@@ -10,7 +10,15 @@ export class UserService {
 
 
   public getAll(): Promise<User[]> {
-    return this.prismaService.user.findMany({ include: { password: true }})
+    return this.prismaService.user.findMany({ 
+      include: { 
+        password: true,
+        books: {
+          include: {
+            book: true,
+          }
+        }
+      }})
   };
 
   public getById(id: User['id']): Promise<User | null> {
